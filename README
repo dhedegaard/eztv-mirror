@@ -1,0 +1,9 @@
+EZTV-Mirror
+
+----------------------------
+
+A simple attempt at mirroring the EZTV-site for when their servers are down. This of course relies on them still posting to the twitter channel.
+
+The basis for this is a simple html page with some javascript to do an AJAX request to twitter and parsing the output.
+
+After you clone the repo, simply open the .html and be amazed.
