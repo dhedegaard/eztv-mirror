@@ -1,220 +1,232 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <title>EZTV</title>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
-    <script type="text/javascript">
-      var month=new Array(12);
-      month[0]="January";
-      month[1]="February";
-      month[2]="March";
-      month[3]="April";
-      month[4]="May";
-      month[5]="June";
-      month[6]="July";
-      month[7]="August";
-      month[8]="September";
-      month[9]="October";
-      month[10]="November";
-      month[11]="December";
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<title>EZTV</title>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript">
+	var month = new Array(12);
+	month[0] = "January";
+	month[1] = "February";
+	month[2] = "March";
+	month[3] = "April";
+	month[4] = "May";
+	month[5] = "June";
+	month[6] = "July";
+	month[7] = "August";
+	month[8] = "September";
+	month[9] = "October";
+	month[10] = "November";
+	month[11] = "December";
 
-      var count = 80;
+	var count = 80;
 
-      $(function() {
-        do_ajax(200);
-      });
+	$(function() {
+		do_ajax(200);
+	});
 
-      // gets a header parameter from the url, or undefined.
-      function get_http_get_param(name) {
-        name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
-        var regexS = "[\\?&]"+name+"=([^&#]*)";
-        var regex = new RegExp( regexS );
-        var results = regex.exec( window.location.href );
-        if( results == null )
-          return "";
-        else
-          return results[1];
-      }
+	// gets a header parameter from the url, or undefined.
+	function get_http_get_param(name) {
+		name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
+		var regexS = "[\\?&]" + name + "=([^&#]*)";
+		var regex = new RegExp(regexS);
+		var results = regex.exec(window.location.href);
+		if (results == null)
+			return "";
+		else
+			return results[1];
+	}
 
-      // returns a pretty string of the milliseconds as a delta.
-      function getPrettyTime(timemillis) {
-        var days = 0;
-        while (timemillis > 1000 * 60 * 60 * 24) {
-          days++;
-          timemillis -= 1000 * 60 * 60 * 24;
-        }
-        var hours = 0;
-        while (timemillis > 1000 * 60 * 60) {
-          hours++;
-          timemillis -= 1000 * 60 * 60;
-        }
-        var mins = 0;
-        while (timemillis > 1000 * 60) {
-          mins++;
-          timemillis -= 1000 * 60;
-        }
-        var result = "";
-        if (days > 0)
-          result += days + (days == 1 ? " day " : " days ");
-        if (hours > 0)
-          result += hours + (hours == 1 ? " hour " : " hours ");
-        if (mins > 0)
-           result += mins + (mins == 1 ? " min" : " mins");
-        return result;
-      }
+	// returns a pretty string of the milliseconds as a delta.
+	function getPrettyTime(timemillis) {
+		var days = 0;
+		while (timemillis > 1000 * 60 * 60 * 24) {
+			days++;
+			timemillis -= 1000 * 60 * 60 * 24;
+		}
+		var hours = 0;
+		while (timemillis > 1000 * 60 * 60) {
+			hours++;
+			timemillis -= 1000 * 60 * 60;
+		}
+		var mins = 0;
+		while (timemillis > 1000 * 60) {
+			mins++;
+			timemillis -= 1000 * 60;
+		}
+		var result = "";
+		if (days > 0)
+			result += days + (days == 1 ? " day " : " days ");
+		if (hours > 0)
+			result += hours + (hours == 1 ? " hour " : " hours ");
+		if (mins > 0)
+			result += mins + (mins == 1 ? " min" : " mins");
+		return result;
+	}
 
-      function do_ajax(count) {
-        count = parseInt(count);
-        if (count == undefined || isNaN(count))
-          count = 80;
-        $("#status").removeClass("hidden");
-        $("#status").html("Fetching... please wait");
-        $("#count").html(count);
-        $("#table").empty();
-        $.getJSON("https://api.twitter.com/1/statuses/user_timeline.json?callback=?",
-                 { "screen_name": "eztv_it", "count": count },
-                 function(data) {
-          $("#table").append("<tr><th>Episode Name</th><th>Time</th><th class='last'>Download</th></tr>");
-          if (data == undefined) {
-            $("#status").html("Error fetching data from twitter.");
-            alert("No data received");
-          } else {
-            $("#status").addClass("hidden");
-            var last_date = undefined;
-            $.each(data, function(idx, item) {
-              var text = item.text.split(" - ");
-              var name = text[0];
-              var url = text[1];
-              var created_at = new Date(item.created_at);
-              var now = new Date();
-              var time_diff = now - created_at;
-              var time_ago = getPrettyTime(time_diff);
+	function do_ajax(count) {
+		count = parseInt(count);
+		if (count == undefined || isNaN(count))
+			count = 80;
+		$("#status").removeClass("hidden");
+		$("#status").html("Fetching... please wait");
+		$("#count").html(count);
+		$("#table").empty();
+		$.getJSON("https://api.twitter.com/1/statuses/user_timeline.json?callback=?", {
+			"screen_name" : "eztv_it",
+			"count" : count
+		}, function(data) {
+			$("#table").append("<tr><th>Episode Name</th><th>Time</th><th class='last'>Download</th></tr>");
+			if (data == undefined) {
+				$("#status").html("Error fetching data from twitter.");
+				alert("No data received");
+			} else {
+				$("#status").addClass("hidden");
+				var last_date = undefined;
+				$.each(data, function(idx, item) {
+					var text = item.text.split(" - ");
+					var name = text[0];
+					var url = text[1];
+					var created_at = new Date(item.created_at);
+					var now = new Date();
+					var time_diff = now - created_at;
+					var time_ago = getPrettyTime(time_diff);
 
-              var below_dayrow = false;
-              if (last_date == undefined || last_date.getDate() != created_at.getDate()) {
-                var dayRow = "<tr><td colspan='3' class='dayRow'>Added on: <span class='bold'>";
-	        dayRow += created_at.getDate() + " ";
-	        dayRow += month[created_at.getMonth()] + ", ";
-	        dayRow += (created_at.getYear() + 1900);
-	        dayRow += "</span></td></tr>";
-                $("#table").append(dayRow);
-                below_dayrow = true;
-              }
-              last_date = created_at;
+					var below_dayrow = false;
+					if (last_date == undefined || last_date.getDate() != created_at.getDate()) {
+						var dayRow = "<tr><td colspan='3' class='dayRow'>Added on: <span class='bold'>";
+						dayRow += created_at.getDate() + " ";
+						dayRow += month[created_at.getMonth()] + ", ";
+						dayRow += (created_at.getYear() + 1900);
+						dayRow += "</span></td></tr>";
+						$("#table").append(dayRow);
+						below_dayrow = true;
+					}
+					last_date = created_at;
 
-              var row = "<tr>";
-	      row += "<td class='episode_name first'>" + name + "</td>";
-   	      row += "<td>" + time_ago + "</td>";
-	      row += "<td class='last'><a href='" + url + "'>" + url + "</a></td>";
-              row += "</tr>";
-              $("#table").append(row);
-              if (below_dayrow)
-                  $("#table tr:last-child td").addClass("firstRowAfterDayRow");
-            });
-            $("#table tr:last-child td").addClass("bottom-row");
-          }
-        });
-      }
-    </script>
-    <style type="text/css">
-      body {
-        background-color: #EDF2F7;
-        font-family: Verdana, Tahoma, Courier, monospace;
-        font-size: 11px;
-      }
+					var row = "<tr>";
+					row += "<td class='episode_name first'>" + name + "</td>";
+					row += "<td>" + time_ago + "</td>";
+					row += "<td class='last'><a href='" + url + "'>" + url + "</a></td>";
+					row += "</tr>";
+					$("#table").append(row);
+					if (below_dayrow)
+						$("#table tr:last-child td").addClass("firstRowAfterDayRow");
+				});
+				$("#table tr:last-child td").addClass("bottom-row");
+				$("#table tr").hover(function() {
+					$(this).children("td").addClass("hover");
+				}, function() {
+					$(this).children("td").removeClass("hover");
+				});
+			}
+		});
+	}
+</script>
+<style type="text/css">
+body {
+	background-color: #EDF2F7;
+	font-family: Verdana, Tahoma, Courier, monospace;
+	font-size: 11px;
+}
 
-      table, th, td {
-        border: 0px;
-        border-spacing: 0;
-      }
+table,th,td {
+	border: 0px;
+	border-spacing: 0;
+}
 
-      td, th {
-        padding: 4px;
-      }
+td,th {
+	padding: 4px;
+}
 
-      td .firstRowAfterDayRow {
-        border-top: none;
-      }
+td .firstRowAfterDayRow {
+	border-top: none;
+}
 
-      td {
-        background-color: #D8EAFC;
-        border-top: 1px solid #CECECE;
-        border-right: 1px solid #CECECE;
-      }
+td {
+	background-color: #D8EAFC;
+	border-top: 1px solid #CECECE;
+	border-right: 1px solid #CECECE;
+}
 
-      th {
-        background-color: #166EC8;
-        color: #C0DBF6;
-        border: 1px solid black;
-        border-bottom: none;
-        border-right: none;
-      }
+.hover {
+	background-color: #EEEEDD;
+}
 
-      .first {
-        border-left: 1px solid black;
-      }
+th {
+	background-color: #166EC8;
+	color: #C0DBF6;
+	border: 1px solid black;
+	border-bottom: none;
+	border-right: none;
+}
 
-      .last {
-        border-right: 1px solid black;
-      }
+.first {
+	border-left: 1px solid black;
+}
 
-      h1 {
-        font-align: center;
-      }
+.last {
+	border-right: 1px solid black;
+}
 
-      #content {
-        text-align: center;
-      }
+h1 {
+	font-align: center;
+}
 
-      #table {
-        margin-left: auto;
-        margin-right: auto;
-        text-align: left;
-      }
+#content {
+	text-align: center;
+}
 
-      .dayRow {
-        background-color: #10559E;
-        color: #C0DBF6;
-        border: 1px solid black;
-      }
+#table {
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+}
 
-      .bold {
-        font-weight: bold;
-      }
+.dayRow {
+	background-color: #10559E;
+	color: #C0DBF6;
+	border: 1px solid black;
+}
 
-      .red {
-        color: red;
-      }
+.bold {
+	font-weight: bold;
+}
 
-      .episode_name {
-        color: red;
-        font-weight: bold;
-      }
+.red {
+	color: red;
+}
 
-      .bottom-row {
-        border-bottom: 1px solid black;
-      }
+.episode_name {
+	color: red;
+	font-weight: bold;
+}
 
-      .link {
-        color: blue;
-        text-decoration: underline;
-      }
+.bottom-row {
+	border-bottom: 1px solid black;
+}
 
-      .hidden {
-        display: none;
-      }
-    </style>
-  </head>
-  <body>
-    <div id="content">
-      <h1>EZTV Twitter Feed</h1>
-      <p>Current number of elements fetched: <span class="bold" id="count"></span></p>
-      <hr />
-      <table id="table">
-      </table>
-      <p id="status" class="bold red">Fetching... please wait</p>
-    </div>
-  </body>
+.link {
+	color: blue;
+	text-decoration: underline;
+}
+
+.hidden {
+	display: none;
+}
+</style>
+</head>
+<body>
+	<div id="content">
+		<h1>EZTV Twitter Feed</h1>
+		<p>
+			Current number of elements fetched: <span class="bold" id="count"></span>
+		</p>
+		<hr />
+		<table id="table">
+		</table>
+		<p id="status" class="bold red">Fetching... please wait</p>
+	</div>
+</body>
 </html>
