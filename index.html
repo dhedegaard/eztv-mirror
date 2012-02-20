@@ -6,20 +6,8 @@
 <title>EZTV</title>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
 <script type="text/javascript">
-	var month = new Array(12);
-	month[0] = "January";
-	month[1] = "February";
-	month[2] = "March";
-	month[3] = "April";
-	month[4] = "May";
-	month[5] = "June";
-	month[6] = "July";
-	month[7] = "August";
-	month[8] = "September";
-	month[9] = "October";
-	month[10] = "November";
-	month[11] = "December";
-
+	var month = [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ];
+	var favorite_shows = [ "The Simpsons", "Top Gear", "Nikita", "Archer 2009", "The Big Bang Theory", "The Office", "Family Guy", "American Dad", "How I Met Your Mother", "Two and a Half Men", "NCIS" ];
 	var count = 80;
 
 	$(function() {
@@ -113,6 +101,10 @@
 					$("#table").append(row);
 					if (below_dayrow)
 						$("#table tr:last-child td").addClass("firstRowAfterDayRow");
+					$.each(favorite_shows, function(index, element) {
+						if (name.toLowerCase().indexOf(element.toLowerCase()) != -1)
+							$("#table tr:last-child td").addClass("favorite");
+					});
 				});
 				$("#table tr:last-child td").addClass("bottom-row");
 				$("#table tr").hover(function() {
@@ -152,6 +144,10 @@ td {
 
 .hover {
 	background-color: #EEEEDD;
+}
+
+.favorite {
+	background-color: #FFFF00;
 }
 
 th {
@@ -212,6 +208,7 @@ h1 {
 	text-decoration: underline;
 }
 
+p
 .hidden {
 	display: none;
 }
