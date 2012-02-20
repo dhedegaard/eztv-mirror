@@ -48,7 +48,7 @@
 			result += days + (days == 1 ? " day " : " days ");
 		if (hours > 0)
 			result += hours + (hours == 1 ? " hour " : " hours ");
-		if (mins > 0)
+		if (mins > 0 && days == 0)
 			result += mins + (mins == 1 ? " min" : " mins");
 		return result;
 	}
@@ -65,7 +65,7 @@
 			"screen_name" : "eztv_it",
 			"count" : count
 		}, function(data) {
-			$("#table").append("<tr><th>Episode Name</th><th>Time</th><th class='last'>Download</th></tr>");
+			$("#table").append("<tr><th>Episode Name</th><th>Release</th><th class='last'>Download</th></tr>");
 			if (data == undefined) {
 				$("#status").html("Error fetching data from twitter.");
 				alert("No data received");
@@ -94,7 +94,7 @@
 					last_date = created_at;
 
 					var row = "<tr>";
-					row += "<td class='episode_name first'>" + name + "</td>";
+					row += "<td class='episode_name first red'>" + name + "</td>";
 					row += "<td>" + time_ago + "</td>";
 					row += "<td class='last'><a href='" + url + "'>" + url + "</a></td>";
 					row += "</tr>";
@@ -143,11 +143,11 @@ td {
 }
 
 .hover {
-	background-color: #EEEEDD;
+	background-color: #EEEEBB;
 }
 
 .favorite {
-	background-color: #FFFF00;
+	background-color: #FFFF55;
 }
 
 th {
@@ -191,11 +191,10 @@ h1 {
 }
 
 .red {
-	color: red;
+	color: #CD4141;
 }
 
 .episode_name {
-	color: red;
 	font-weight: bold;
 }
 
