@@ -70,7 +70,7 @@
 				$("#status").html("Error fetching data from twitter.");
 				alert("No data received");
 			} else {
-				$("#status").addClass("hidden");
+				$("#status").empty();
 				var last_date = undefined;
 				$.each(data, function(idx, item) {
 					var text = item.text.split(" - ");
