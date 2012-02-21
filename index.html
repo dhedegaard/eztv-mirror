@@ -76,7 +76,9 @@
 					var text = item.text.split(" - ");
 					var name = text[0];
 					var url = text[1];
-					var created_at = new Date(item.created_at);
+					var created_at_str = item.created_at.toString();
+					created_at_str = created_at_str.replace("+0000 ", "");
+					var created_at = new Date(created_at_str);
 					var now = new Date();
 					var time_diff = now - created_at;
 					var time_ago = getPrettyTime(time_diff);
