@@ -7,5 +7,3 @@ A simple attempt at mirroring the EZTV-site for when their servers are down. Thi
 The basis for this is a simple html page with some javascript to do an AJAX request to twitter and parsing the output.
 
 After you clone the repo, simply open the .html and be amazed.
-
-Feel free to make it work on IE6 and send a pull request :)
